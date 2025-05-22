@@ -1,0 +1,39 @@
+<div class="product-list-container">
+    <h2>Product Inventory ({{ productsStore.totalProducts() }} items)</h2>
+    <p class="total-value">Total Inventory Value: ${{ productsStore.totalValue() | number:'1.2-2' }}</p>
+    <app-product-form></app-product-form>
+    <table class="product-table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Category</th>
+                <th>Price</th>
+                <th>Stock</th>
+                <th>Value</th>
+                <th>Added</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @for (product of productsStore.products(); track product.id) {
+                <tr>
+                    <td>{{ product.name }}</td>
+                    <td>{{ product.category }}</td>
+                    <td>${{ product.price | number:'1.2-2' }}</td>
+                    <td>{{ product.stockQuantity }}</td>
+                    <td>${{ product.price * product.stockQuantity | number:'1.2-2' }}</td>
+                    <td>{{ product.createdAt | date:'mediumDate' }}</td>
+                    <td class="actions">
+                        <button (click)="editProduct(product.id)" class="btn btn-sm btn-primary">Edit</button>
+                        <button (click)="deleteProduct(product.id)" class="btn btn-sm btn-danger">Delete</button>
+                    </td>
+                </tr>
+            }
+            @if (productsStore.products().length === 0) {
+                <tr>
+                    <td colspan="7" class="no-products">No products found. Add some products to get started.</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
